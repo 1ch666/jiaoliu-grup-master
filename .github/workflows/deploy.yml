@@ -32,6 +32,28 @@ jobs:
       - name: Build Cloudflare worker
         run: npx opennextjs-cloudflare build
 
+      - name: Validate Cloudflare secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          missing=0
+
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "Missing GitHub secret: CLOUDFLARE_API_TOKEN" >> "$GITHUB_STEP_SUMMARY"
+            missing=1
+          fi
+
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "Missing GitHub secret: CLOUDFLARE_ACCOUNT_ID" >> "$GITHUB_STEP_SUMMARY"
+            missing=1
+          fi
+
+          if [ "$missing" -eq 1 ]; then
+            echo "Add the missing secrets in GitHub repo Settings -> Secrets and variables -> Actions." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
       - name: Deploy to Cloudflare
         id: deploy
         uses: cloudflare/wrangler-action@v3
