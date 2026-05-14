@@ -31,9 +31,6 @@ jobs:
 
       - name: Build Cloudflare worker
         run: npx opennextjs-cloudflare build
-        env:
-          EXTERNAL_API_URL: ${{ secrets.EXTERNAL_API_URL }}
-          EXTERNAL_API_KEY: ${{ secrets.EXTERNAL_API_KEY }}
 
       - name: Deploy to Cloudflare
         id: deploy
@@ -42,13 +39,13 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
-          secrets: |
-            EXTERNAL_API_URL
-            EXTERNAL_API_KEY
-        env:
-          EXTERNAL_API_URL: ${{ secrets.EXTERNAL_API_URL }}
-          EXTERNAL_API_KEY: ${{ secrets.EXTERNAL_API_KEY }}
 
-      - name: Print deployment URL
+      - name: Show deployment URL
         if: steps.deploy.outputs.deployment-url != ''
-        run: echo "${{ steps.deploy.outputs.deployment-url }}"
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          echo "### Cloudflare deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Open deployed site]($DEPLOYMENT_URL)" >> "$GITHUB_STEP_SUMMARY"
+          echo "$DEPLOYMENT_URL"

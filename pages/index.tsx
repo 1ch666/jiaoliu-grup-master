@@ -1,9 +1,53 @@
-import { JSX, useState } from "react"
+import { JSX, useEffect, useState } from "react"
 import style from "./style.module.scss"
 import clsx from "clsx"
 
+type WeatherData = {
+  location: {
+    name: string
+    timezone: string
+  }
+  current: {
+    temperature2m: number
+    apparentTemperature: number
+    relativeHumidity2m: number
+    precipitation: number
+    windSpeed10m: number
+  }
+  summary: string
+  source: string
+}
+
+type WeatherResponse = {
+  ok: boolean
+  data?: WeatherData
+  error?: string
+}
+
 export default function TESTTEST() {
   const [page, setPage] = useState(0)
+  const [weather, setWeather] = useState<WeatherData | null>(null)
+  const [weatherError, setWeatherError] = useState("")
+
+  useEffect(() => {
+    async function loadWeather() {
+      try {
+        const response = await fetch("/api/external")
+        const result = (await response.json()) as WeatherResponse
+
+        if (!result.ok || !result.data) {
+          setWeatherError(result.error || "Weather unavailable")
+          return
+        }
+
+        setWeather(result.data)
+      } catch {
+        setWeatherError("Weather unavailable")
+      }
+    }
+
+    loadWeather()
+  }, [])
 
   return <div id={style["Frame"]}>
     <div className={style["Bar"]}>
@@ -39,6 +83,19 @@ export default function TESTTEST() {
             </p>
             <h1>{"如果有願意分享經驗或資源的前輩，也非常歡迎加入"}</h1>
             <a href="https://discord.gg/jjSUPdSAdE" target="_blank">{"加入 Discord 伺服器"}</a>
+            <div className={style["Weather"]}>
+              <span>{weather?.source || "Open-Meteo"}</span>
+              {weather ? <>
+                <strong>{weather.location.name} Weather</strong>
+                <div>
+                  <b>{Math.round(weather.current.temperature2m)}°C</b>
+                  <small>{weather.summary}</small>
+                </div>
+                <p>
+                  {`Feels ${Math.round(weather.current.apparentTemperature)}°C / Humidity ${weather.current.relativeHumidity2m}% / Wind ${Math.round(weather.current.windSpeed10m)} km/h`}
+                </p>
+              </> : <p>{weatherError || "Loading free API data..."}</p>}
+            </div>
           </>
         ],
         [

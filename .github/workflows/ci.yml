@@ -32,12 +32,6 @@ jobs:
 
       - name: Build Next.js app
         run: npm run build
-        env:
-          EXTERNAL_API_URL: https://jsonplaceholder.typicode.com/posts/1
-          EXTERNAL_API_KEY: ""
 
       - name: Build Cloudflare worker
         run: npx opennextjs-cloudflare build
-        env:
-          EXTERNAL_API_URL: https://jsonplaceholder.typicode.com/posts/1
-          EXTERNAL_API_KEY: ""
