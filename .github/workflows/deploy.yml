@@ -62,6 +62,14 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
 
+      - name: Warm deployed site
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          url="${DEPLOYMENT_URL:-https://jiaoliu-grup.yichengc869.workers.dev}"
+          curl --retry 5 --retry-all-errors --retry-delay 3 --fail --silent --show-error "$url" > /dev/null
+          curl --retry 5 --retry-all-errors --retry-delay 3 --fail --silent --show-error "$url/api/external" > /dev/null
+
       - name: Show deployment URL
         if: steps.deploy.outputs.deployment-url != ''
         env:
