@@ -82,7 +82,7 @@ export default function TESTTEST() {
               {"主要做技術討論與資源交流"}<br />
             </p>
             <h1>{"如果有願意分享經驗或資源的前輩，也非常歡迎加入"}</h1>
-            <a href="https://discord.gg/jjSUPdSAdE" target="_blank">{"加入 Discord 伺服器"}</a>
+            <a href="https://discord.gg/jjSUPdSAdE" target="_blank" rel="noopener noreferrer">{"加入 Discord 伺服器"}</a>
             <div className={style["Weather"]}>
               <span>{weather?.source || "Open-Meteo"}</span>
               {weather ? <>

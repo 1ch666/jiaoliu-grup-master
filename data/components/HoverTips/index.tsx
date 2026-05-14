@@ -126,10 +126,10 @@ const HoverTips: NextPage = () => {
       </svg>
       <div id={style["hoverTips"]} >
         <div id={style["FLASH"]} />
-        <div dangerouslySetInnerHTML={{ __html: tipsCtx }}></div>
+        <div>{tipsCtx}</div>
       </div>
 
-      <div id={style["hoverTips2"]} dangerouslySetInnerHTML={{ __html: tipsCtx }} />
+      <div id={style["hoverTips2"]}>{tipsCtx}</div>
 
     </>
   )

@@ -254,7 +254,7 @@ export const newInput = {
 
           const span = document.createElement("span")
           span.classList.add(style["text"])
-          span.innerHTML = msg
+          span.innerText = msg
           span.setAttribute("overflow-bar-none", "")
 
           frame.appendChild(span)
@@ -2041,7 +2041,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     throwNotic(message: string, time?: number) {
       const div = document.createElement("div")
 
-      div.innerHTML = message
+      div.innerText = message
 
       div.style.zIndex = new Date().getTime().toString()
 
