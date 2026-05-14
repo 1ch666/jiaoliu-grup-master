@@ -34,4 +34,4 @@ jobs:
         run: npm run build
 
       - name: Build Cloudflare worker
-        run: npx opennextjs-cloudflare build
+        run: npm run build:cloudflare
