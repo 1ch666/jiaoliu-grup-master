@@ -59,7 +59,7 @@ export default function TESTTEST() {
         {[
           "首頁",
           "關於我們",
-          "產品服務",
+          "群組詳情",
           "聯絡我們",
         ].map((e, i) => <button
           key={i}
